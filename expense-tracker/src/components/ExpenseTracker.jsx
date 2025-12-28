@@ -1,28 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TransactionCard from "./TransactionCard";
 
 function ExpenseTracker() {
-  // State for expenses list
-  const [expenses, setExpenses] = useState([]);
+  
+  const [expenses, setExpenses] = useState(() => {
+    const saved = localStorage.getItem("expenses");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // State for controlled form
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
 
+  const [filter, setFilter] = useState("All");
+
+ 
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newExpense = {
       id: Date.now(),
       description,
       amount: Number(amount),
       category,
     };
-
     setExpenses([...expenses, newExpense]);
-
-    // Reset form
     setDescription("");
     setAmount("");
     setCategory("");
@@ -32,11 +37,19 @@ function ExpenseTracker() {
     setExpenses(expenses.filter((expense) => expense.id !== id));
   };
 
+  
+  const filteredExpenses =
+    filter === "All"
+      ? expenses
+      : expenses.filter((expense) => expense.category === filter);
+
+  const categories = ["All", "Food", "Transport", "Shopping"];
+
   return (
-    <div style={{ maxWidth: "400px", margin: "auto" }}>
+    <div style={{ maxWidth: "500px", margin: "auto" }}>
       <h2>Expense Tracker</h2>
 
-      {/* Controlled Form */}
+      
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -45,7 +58,6 @@ function ExpenseTracker() {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
-
         <input
           type="number"
           placeholder="Amount"
@@ -53,7 +65,6 @@ function ExpenseTracker() {
           onChange={(e) => setAmount(e.target.value)}
           required
         />
-
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -64,17 +75,37 @@ function ExpenseTracker() {
           <option value="Transport">Transport</option>
           <option value="Shopping">Shopping</option>
         </select>
-
         <button type="submit">Add Expense</button>
       </form>
 
       <hr />
 
-      {/* Conditional Rendering: Empty List */}
-      {expenses.length === 0 ? (
-        <p>No Transactions Found</p>
+      
+      <div style={{ marginBottom: "10px" }}>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setFilter(cat)}
+            style={{
+              marginRight: "5px",
+              backgroundColor: filter === cat ? "#4caf50" : "#ccc",
+              color: filter === cat ? "white" : "black",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+
+      {filteredExpenses.length === 0 ? (
+        filter === "All" ? (
+          <p>No Transactions Found</p>
+        ) : (
+          <p>No expenses for {filter}</p>
+        )
       ) : (
-        expenses.map((expense) => (
+        filteredExpenses.map((expense) => (
           <TransactionCard
             key={expense.id}
             description={expense.description}
