@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import TransactionCard from "./TransactionCard";
 
 function ExpenseTracker() {
-  // Load initial state from localStorage
+  
   const [expenses, setExpenses] = useState(() => {
     const saved = localStorage.getItem("expenses");
     return saved ? JSON.parse(saved) : [];
@@ -12,9 +12,9 @@ function ExpenseTracker() {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
 
-  const [filter, setFilter] = useState("All"); // Category filter
+  const [filter, setFilter] = useState("All");
 
-  // Save expenses to localStorage whenever it changes
+ 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [expenses]);
@@ -37,7 +37,7 @@ function ExpenseTracker() {
     setExpenses(expenses.filter((expense) => expense.id !== id));
   };
 
-  // Filtered expenses based on selected category
+  
   const filteredExpenses =
     filter === "All"
       ? expenses
@@ -49,7 +49,7 @@ function ExpenseTracker() {
     <div style={{ maxWidth: "500px", margin: "auto" }}>
       <h2>Expense Tracker</h2>
 
-      {/* Controlled Form */}
+      
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -80,7 +80,7 @@ function ExpenseTracker() {
 
       <hr />
 
-      {/* Category Filter Buttons */}
+      
       <div style={{ marginBottom: "10px" }}>
         {categories.map((cat) => (
           <button
@@ -97,7 +97,7 @@ function ExpenseTracker() {
         ))}
       </div>
 
-      {/* Conditional Rendering */}
+
       {filteredExpenses.length === 0 ? (
         filter === "All" ? (
           <p>No Transactions Found</p>
