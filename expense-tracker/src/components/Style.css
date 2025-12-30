@@ -37,7 +37,7 @@ body {
 
 .expense-tracker input,
 .expense-tracker select {
-  flex: 1 1 200px;
+  flex: 200px;
   padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -45,11 +45,6 @@ body {
   transition: 0.3s;
 }
 
-.expense-tracker input:focus,
-.expense-tracker select:focus {
-  border-color: #3498db;
-  outline: none;
-}
 
 .expense-tracker button[type="submit"] {
   padding: 10px 25px;
