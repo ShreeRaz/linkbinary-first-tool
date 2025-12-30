@@ -90,8 +90,8 @@ body {
   padding: 8px 18px;
   border-radius: 8px;
   border: none;
-  background-color: #e74c3c !important;
-  color: white !important;
+  background-color: #e74c3c ;
+  color: white;
   cursor: pointer;
   font-weight: 500;
 }
