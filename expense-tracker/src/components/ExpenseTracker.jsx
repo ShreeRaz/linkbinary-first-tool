@@ -1,12 +1,19 @@
+import "./Style.css";
 import { useState, useEffect } from "react";
 import TransactionCard from "./TransactionCard";
+import { PrimaryButton } from "./Button";
 
 function ExpenseTracker() {
-  
+
+//local storage integration
   const [expenses, setExpenses] = useState(() => {
     const saved = localStorage.getItem("expenses");
     return saved ? JSON.parse(saved) : [];
   });
+
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
 
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -14,11 +21,7 @@ function ExpenseTracker() {
 
   const [filter, setFilter] = useState("All");
 
- 
-  useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]);
-
+// handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newExpense = {
@@ -33,39 +36,36 @@ function ExpenseTracker() {
     setCategory("");
   };
 
+// filter   
+  const filteredExpenses = 
+    filter === "All" ? 
+    expenses
+    : expenses.filter((expense) => expense.category === filter);
+
+  const categories = ["All", "Food", "Transport", "Shopping"];
+// delete expense
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((expense) => expense.id !== id));
   };
 
-  
-  const filteredExpenses =
-    filter === "All"
-      ? expenses
-      : expenses.filter((expense) => expense.category === filter);
-
-  const categories = ["All", "Food", "Transport", "Shopping"];
 
   return (
-    <div style={{ maxWidth: "500px", margin: "auto" }}>
-      <h2>Expense Tracker</h2>
-
-      
+    <div className="expense-tracker">
+      <h3>Expense Tracker...</h3>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+        <input type="text"
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
-        <input
-          type="number"
+        <input type="number"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           required
         />
-        <select
+         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
@@ -75,48 +75,38 @@ function ExpenseTracker() {
           <option value="Transport">Transport</option>
           <option value="Shopping">Shopping</option>
         </select>
-        <button type="submit">Add Expense</button>
+
+        <button type="submit">Add Expense</button>    
       </form>
-
-      <hr />
-
-      
-      <div style={{ marginBottom: "10px" }}>
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setFilter(cat)}
-            style={{
-              marginRight: "5px",
-              backgroundColor: filter === cat ? "#4caf50" : "#ccc",
-              color: filter === cat ? "white" : "black",
-            }}
-          >
-            {cat}
-          </button>
+      <div className="categories">
+        {categories.map((cat)=>(
+         <PrimaryButton label={cat} onClick={() => setFilter(cat)} />
         ))}
       </div>
 
-
-      {filteredExpenses.length === 0 ? (
-        filter === "All" ? (
-          <p>No Transactions Found</p>
-        ) : (
-          <p>No expenses for {filter}</p>
-        )
-      ) : (
-        filteredExpenses.map((expense) => (
-          <TransactionCard
+        {filteredExpenses.length === 0 ?(
+          filter === "All" ? (
+            <p>No expenses added yet.</p>
+          ): (
+            <p>No expenses in this category.</p>
+          )
+        ):(
+          filteredExpenses.map((expense) =>(
+        <TransactionCard
             key={expense.id}
             description={expense.description}
             amount={expense.amount}
             category={expense.category}
             onDelete={() => deleteExpense(expense.id)}
           />
-        ))
-      )}
+        )))
+      }
+        
+        
+        
+        
     </div>
-  );
+  )
 }
 
 export default ExpenseTracker;

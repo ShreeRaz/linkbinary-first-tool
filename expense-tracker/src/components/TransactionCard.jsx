@@ -1,19 +1,18 @@
-function TransactionCard({ description, amount, category, onDelete }) {
+import "./Style.css";
+import {PrimaryButton} from "./Button";
+
+function TransactionCard({description,amount,category,onDelete}) {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "8px" }}>
+    <div className="transaction-card">
       <h4>{description}</h4>
       <p>Amount: NPR {amount}</p>
       <p>Category: {category}</p>
 
-      
-      {amount > 1000 && (
-        <span style={{ color: "red", fontWeight: "bold" }}>
-          ⚠ High Spend
-        </span>
-      )}
-
-      <br />
-      <button onClick={onDelete}>Delete</button>
+      {amount >1000 && 
+      <p className="high-spend">
+        ⚠️ High Spend Alert!
+      </p>}
+      <PrimaryButton className="delete-btn" label="Delete" onClick={onDelete}/>
     </div>
   );
 }
