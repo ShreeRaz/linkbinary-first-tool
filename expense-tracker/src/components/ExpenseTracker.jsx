@@ -76,11 +76,11 @@ function ExpenseTracker() {
           <option value="Shopping">Shopping</option>
         </select>
 
-        <button type="submit">Add Expense</button>    
+        <PrimaryButton className="submit-btn" label="Add Expense" onClick={handleSubmit} />   
       </form>
       <div className="categories">
         {categories.map((cat)=>(
-         <PrimaryButton label={cat} onClick={() => setFilter(cat)} />
+         <PrimaryButton className="Category-btn"label={cat} onClick={() => setFilter(cat)} />
         ))}
       </div>
 

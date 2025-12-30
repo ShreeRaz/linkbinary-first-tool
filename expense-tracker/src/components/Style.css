@@ -46,7 +46,7 @@ body {
 }
 
 
-.expense-tracker button[type="submit"] {
+.submit-btn{
   padding: 10px 25px;
   background-color: #3498db;
   color: white;
@@ -57,7 +57,7 @@ body {
   
 }
 
-.expense-tracker button[type="submit"]:hover {
+.submit-btn:hover {
   background-color: #386e92;
 }
 
@@ -69,7 +69,7 @@ body {
   flex-wrap: wrap;
 }
 
-.primary-button button {
+.Category-btn {
   padding: 8px 18px;
   border-radius: 8px;
   border: none;
@@ -80,19 +80,24 @@ body {
   
 }
 
-.primary-button button:hover {
+.Category-btn:hover {
   background-color: #3498db;
   color: white;
 }
 
 
 .delete-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
   background-color: #e74c3c !important;
   color: white !important;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .delete-btn:hover {
-  background-color: #c0392b !important;
+  background-color: #c0392b ;
 }
 
 
